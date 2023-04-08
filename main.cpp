@@ -19,7 +19,7 @@ struct RBTree {
 
     // Операция поиска
     bool find(Node<type>* node, type data) {
-        if (node == nullptr) {
+        if (node == nil) {
             return false;
         }
         if (data < node->value) {
@@ -30,25 +30,30 @@ struct RBTree {
             return true;
         }
     }
-    
+
     // Поиск узла с минимальным значением
     Node<type>* minValueNode(Node<type>* node) {
-        Node* current = node;
-        while (current->left != nullptr) {
+        Node<type>* current = node;
+        while (current->left != nil) {
             current = current->left;
         }
         return current;
     }
-    
+
     // Вставка
     void insert(type value) {
-        Node* node = new Node(value, true);
-        if (root == nullptr) {
+        Node<type>* node = new Node<type>();
+        node->left = nil;
+        node->right = nil;
+        node->parent = nil;
+        node->value = value;
+
+        if (root == nil) {
             root = node; // проблема (?)
         } else {
-            Node* parent = nullptr;
-            Node* current = root;
-            while (current != nullptr) {
+            Node<type>* parent = nil;
+            Node<type>* current = root;
+            while (current != nil) {
                 parent = current;
                 if (node->value < current->value) {
                     current = current->left;
@@ -65,7 +70,7 @@ struct RBTree {
             fixInsert(node);
         }
     }
-    
+
     void push(type data) {
         Node<type> *pNode = new Node<type>();
         pNode->left = nil;
@@ -149,18 +154,18 @@ struct RBTree {
             // при удалении черной вершины могла быть нарушена балансировка
             fixDeleting(p);
     }
-    
+
     ////////////////////////////////////
     // НЕ УКРАЛА А ПОЗАИМСТВОВАЛА
     // p.s. попробуй потестировать этот код, если не будешь успевать пофиксить повороты
     void rotateLeft(Node<type>* node) {
-        Node* rightChild = node->right;
+        Node<type>* rightChild = node->right;
         node->right = rightChild->left;
-        if (rightChild->left != nullptr) {
+        if (rightChild->left != nil) {
             rightChild->left->parent = node;
         }
         rightChild->parent = node->parent;
-        if (node->parent == nullptr) {
+        if (node->parent == nil) {
             root = rightChild;
         } else if (node == node->parent->left) {
             node->parent->left = rightChild;
@@ -172,13 +177,13 @@ struct RBTree {
     }
 
     void rotateRight(Node<type>* node) {
-        Node* leftChild = node->left;
+        Node<type>* leftChild = node->left;
         node->left = leftChild->right;
-        if (leftChild->right != nullptr) {
+        if (leftChild->right != nil) {
             leftChild->right->parent = node;
         }
         leftChild->parent = node->parent;
-        if (node->parent == nullptr) {
+        if (node->parent == nil) {
             root = leftChild;
         } else if (node == node->parent->right) {
             node->parent->right = leftChild;
@@ -189,7 +194,7 @@ struct RBTree {
         node->parent = leftChild;
     }
     ////////////////////////////////////
-    
+
     void right_rotate(Node<type> *pNode) {
 
         if (pNode->parent != nil) {
@@ -289,12 +294,12 @@ private:
         p->color = 0;
         root->color = 0;
     };
-    
-    void fixInsert(Node* node) {
+
+    void fixInsert(Node<type>* node) {
         while (node != root && node->parent->color == true) {
             if (node->parent == node->parent->parent->left) {
-                Node* uncle = node->parent->parent->right;
-                if (uncle != nullptr && uncle->color == true) {
+                Node<type>* uncle = node->parent->parent->right;
+                if (uncle != nil && uncle->color == true) {
                     node->parent->color = false;
                     uncle->color = false;
                     node->parent->parent->color = true;
@@ -309,8 +314,8 @@ private:
                     rotateRight(node->parent->parent);
                 }
             } else {
-                Node* uncle = node->parent->parent->left;
-                if (uncle != nullptr && uncle->color == true) {
+                Node<type>* uncle = node->parent->parent->left;
+                if (uncle != nil && uncle->color == true) {
                     node->parent->color = false;
                     uncle->color = false;
                     node->parent->parent->color = true;
@@ -326,9 +331,9 @@ private:
                 }
             }
         }
-            root->color = false;
+        root->color = false;
     }
-    
+
     void push(Node<type> *pNode, Node<type> *pNewNode) {
         if (pNode->value <= pNewNode->value) {
             if (pNode->right == nil) {
@@ -374,7 +379,7 @@ private:
 int main() {
     RBTree<int> intBT;
     vector<int> a = {6, 3, 8, 2, 5, 7, 79, 8};
-
+/*
     intBT.push(a[0]);
     intBT.push(a[1], 1);
     intBT.push(a[2], 1);
@@ -382,11 +387,10 @@ int main() {
     intBT.push(a[4]);
     intBT.push(a[5]);
     intBT.push(a[6]);
-    intBT.push(a[7], 1);
+    intBT.push(a[7], 1);*/
 
-
-    //for (int i = 0; i < a.size(); i++){
-    //    intBT.push(a[i]);}
+    for (int i = 0; i < a.size(); i++){
+        intBT.insert(a[i]);}
     intBT.remove(7);
     return 0;
 }
