@@ -148,8 +148,47 @@ struct RBTree {
             // при удалении черной вершины могла быть нарушена балансировка
             fixDeleting(p);
     }
+    
+    ////////////////////////////////////
+    // НЕ УКРАЛА А ПОЗАИМСТВОВАЛА
+    // p.s. попробуй потестировать этот код, если не будешь успевать пофиксить повороты
+    void rotateLeft(Node* node) {
+        Node* rightChild = node->right;
+        node->right = rightChild->left;
+        if (rightChild->left != nullptr) {
+            rightChild->left->parent = node;
+        }
+        rightChild->parent = node->parent;
+        if (node->parent == nullptr) {
+            root = rightChild;
+        } else if (node == node->parent->left) {
+            node->parent->left = rightChild;
+        } else {
+            node->parent->right = rightChild;
+        }
+        rightChild->left = node;
+        node->parent = rightChild;
+    }
 
-
+    void rotateRight(Node* node) {
+        Node* leftChild = node->left;
+        node->left = leftChild->right;
+        if (leftChild->right != nullptr) {
+            leftChild->right->parent = node;
+        }
+        leftChild->parent = node->parent;
+        if (node->parent == nullptr) {
+            root = leftChild;
+        } else if (node == node->parent->right) {
+            node->parent->right = leftChild;
+        } else {
+            node->parent->left = leftChild;
+        }
+        leftChild->right = node;
+        node->parent = leftChild;
+    }
+    ////////////////////////////////////
+    
     void right_rotate(Node<type> *pNode) {
 
         if (pNode->parent != nil) {
