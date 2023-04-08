@@ -64,6 +64,7 @@ struct RBTree {
             }
             fixInsert(node);
         }
+    }
     
     void push(type data) {
         Node<type> *pNode = new Node<type>();
