@@ -5,7 +5,7 @@ using namespace std;
 
 template<class type>
 struct Node {
-    bool color = false; // 1 is red, 0 is false
+    bool color = false; // 1 is red, 0 is black
     type value;
     Node *left = nullptr;
     Node *right = nullptr;
@@ -17,7 +17,54 @@ struct RBTree {
     Node<type> *nil = new Node<type>();
     Node<type> *root = nil;
 
-
+    // Операция поиска
+    bool find(Node* node, type data) {
+        if (node == nullptr) {
+            return false;
+        }
+        if (data < node->data) {
+            return find(node->left, data);
+        } else if (data > node->data) {
+            return find(node->right, data);
+        } else {
+            return true;
+        }
+    }
+    
+    // Поиск узла с минимальным значением
+    Node* minValueNode(Node* node) {
+        Node* current = node;
+        while (current->left != nullptr) {
+            current = current->left;
+        }
+        return current;
+    }
+    
+    // Вставка
+    void insert(type value) {
+    Node* node = new Node(value, true);
+    if (root == nullptr) {
+        root = node; // проблема (?)
+    } else {
+        Node* parent = nullptr;
+        Node* current = root;
+        while (current != nullptr) {
+            parent = current;
+            if (node->data < current->data) {
+                current = current->left;
+            } else {
+                current = current->right;
+            }
+        }
+        node->parent = parent;
+        if (node->data < parent->data) {
+            parent->left = node;
+        } else {
+            parent->right = node;
+        }
+        fixInsert(node);
+    }
+    
     void push(type data) {
         Node<type> *pNode = new Node<type>();
         pNode->left = nil;
