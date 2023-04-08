@@ -72,8 +72,10 @@ struct RBTree {
                 root = nil;
             else //ссылку на p у "отца" меняем на nil
             { if (p->parent->right == p) p->parent->right = nil; else p->parent->left = nil; }
-            nil->parent = p->parent;
-            fixDeleting(nil);
+            if (p->color == 0) {
+                nil->parent = p->parent;
+                fixDeleting(nil);
+            }
             return;
         }
 
@@ -107,7 +109,7 @@ struct RBTree {
             if (pNode->right != nil) {
                 pNode->parent->left = pNode->right;
                 pNode->right->parent = pNode->parent;
-            } else pNode->parent->left= nil;
+            } else pNode->parent->left = nil;
 
             pNode->right = pNode->parent;
             pNode->parent = pNode->right->parent;
@@ -128,7 +130,7 @@ struct RBTree {
             if (pNode->left != nil) {
                 pNode->parent->right = pNode->left;
                 pNode->left->parent = pNode->parent;
-            } else pNode->parent->right= nil;
+            } else pNode->parent->right = nil;
 
             pNode->left = pNode->parent;
             pNode->parent = pNode->left->parent;
