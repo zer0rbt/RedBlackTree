@@ -18,7 +18,7 @@ struct RBTree {
     Node<type> *root = nil;
 
     // Операция поиска
-    bool find(Node* node, type data) {
+    bool find(Node<type>* node, type data) {
         if (node == nullptr) {
             return false;
         }
@@ -32,7 +32,7 @@ struct RBTree {
     }
     
     // Поиск узла с минимальным значением
-    Node* minValueNode(Node* node) {
+    Node<type>* minValueNode(Node<type>* node) {
         Node* current = node;
         while (current->left != nullptr) {
             current = current->left;
