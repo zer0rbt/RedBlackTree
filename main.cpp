@@ -42,28 +42,28 @@ struct RBTree {
     
     // Вставка
     void insert(type value) {
-    Node* node = new Node(value, true);
-    if (root == nullptr) {
-        root = node; // проблема (?)
-    } else {
-        Node* parent = nullptr;
-        Node* current = root;
-        while (current != nullptr) {
-            parent = current;
-            if (node->data < current->data) {
-                current = current->left;
-            } else {
-                current = current->right;
-            }
-        }
-        node->parent = parent;
-        if (node->data < parent->data) {
-            parent->left = node;
+        Node* node = new Node(value, true);
+        if (root == nullptr) {
+            root = node; // проблема (?)
         } else {
-            parent->right = node;
+            Node* parent = nullptr;
+            Node* current = root;
+            while (current != nullptr) {
+                parent = current;
+                if (node->data < current->data) {
+                    current = current->left;
+                } else {
+                    current = current->right;
+                }
+            }
+            node->parent = parent;
+            if (node->data < parent->data) {
+                parent->left = node;
+            } else {
+                parent->right = node;
+            }
+            fixInsert(node);
         }
-        fixInsert(node);
-    }
     
     void push(type data) {
         Node<type> *pNode = new Node<type>();
@@ -248,9 +248,47 @@ private:
         }
         p->color = 0;
         root->color = 0;
-
     };
-
+    
+    void fixInsert(Node* node) {
+        while (node != root && node->parent->color == true) {
+            if (node->parent == node->parent->parent->left) {
+                Node* uncle = node->parent->parent->right;
+                if (uncle != nullptr && uncle->color == true) {
+                    node->parent->color = false;
+                    uncle->color = false;
+                    node->parent->parent->color = true;
+                    node = node->parent->parent;
+                } else {
+                    if (node == node->parent->right) {
+                        node = node->parent;
+                        rotateLeft(node);
+                    }
+                    node->parent->color = false;
+                    node->parent->parent->color = true;
+                    rotateRight(node->parent->parent);
+                }
+            } else {
+                Node* uncle = node->parent->parent->left;
+                if (uncle != nullptr && uncle->color == true) {
+                    node->parent->color = false;
+                    uncle->color = false;
+                    node->parent->parent->color = true;
+                    node = node->parent->parent;
+                } else {
+                    if (node == node->parent->left) {
+                        node = node->parent;
+                        rotateRight(node);
+                    }
+                    node->parent->color = false;
+                    node->parent->parent->color = true;
+                    rotateLeft(node->parent->parent);
+                }
+            }
+        }
+            root->color = false;
+    }
+    
     void push(Node<type> *pNode, Node<type> *pNewNode) {
         if (pNode->value <= pNewNode->value) {
             if (pNode->right == nil) {
