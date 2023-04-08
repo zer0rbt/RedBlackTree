@@ -22,9 +22,9 @@ struct RBTree {
         if (node == nullptr) {
             return false;
         }
-        if (data < node->data) {
+        if (data < node->value) {
             return find(node->left, data);
-        } else if (data > node->data) {
+        } else if (data > node->value) {
             return find(node->right, data);
         } else {
             return true;
@@ -50,14 +50,14 @@ struct RBTree {
             Node* current = root;
             while (current != nullptr) {
                 parent = current;
-                if (node->data < current->data) {
+                if (node->value < current->value) {
                     current = current->left;
                 } else {
                     current = current->right;
                 }
             }
             node->parent = parent;
-            if (node->data < parent->data) {
+            if (node->value < parent->value) {
                 parent->left = node;
             } else {
                 parent->right = node;
@@ -153,7 +153,7 @@ struct RBTree {
     ////////////////////////////////////
     // НЕ УКРАЛА А ПОЗАИМСТВОВАЛА
     // p.s. попробуй потестировать этот код, если не будешь успевать пофиксить повороты
-    void rotateLeft(Node* node) {
+    void rotateLeft(Node<type>* node) {
         Node* rightChild = node->right;
         node->right = rightChild->left;
         if (rightChild->left != nullptr) {
@@ -171,7 +171,7 @@ struct RBTree {
         node->parent = rightChild;
     }
 
-    void rotateRight(Node* node) {
+    void rotateRight(Node<type>* node) {
         Node* leftChild = node->left;
         node->left = leftChild->right;
         if (leftChild->right != nullptr) {
