@@ -364,11 +364,11 @@ private:
 
     void pprint(Node<type> *pNode, int bsc) {
         for (int i = 0; i < bsc; i++)
-            cout << " ";
+            cout << "--";
         if (pNode != nil)
-            cout << pNode->value << endl;
-        if (pNode->left) pprint(pNode->left, bsc + 1);
-        if (pNode->right) pprint(pNode->right, bsc + 1);
+            cout << pNode->value << " ["<< pNode->color << "]" << endl;
+        if (pNode->left != nil) pprint(pNode->left, bsc + 1);
+        if (pNode->right  != nil) pprint(pNode->right, bsc + 1);
 
     }
 
@@ -378,7 +378,7 @@ private:
 
 int main() {
     RBTree<int> intBT;
-    vector<int> a = {6, 3, 8, 2, 5, 7, 79, 8};
+    vector<int> a = {6, 3, 8, 2, 7, 79, 8};
 /*
     intBT.push(a[0]);
     intBT.push(a[1], 1);
@@ -391,6 +391,7 @@ int main() {
 
     for (int i = 0; i < a.size(); i++){
         intBT.insert(a[i]);}
+    intBT.pprint();
     intBT.remove(7);
     return 0;
 }
