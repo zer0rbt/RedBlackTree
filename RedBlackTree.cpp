@@ -143,7 +143,7 @@ struct RBTree {
                 y->right->parent = y->parent;
             if (y == root)//y — корень
                 root = y->right;
-            else y->parent = y->right; //у родителя ссылку на y меняем на ссылку на первого ребенка y
+            else y->parent->left = y->right; //у родителя ссылку на y меняем на ссылку на первого ребенка y
 
         }
         bool go = (p->color == false);
@@ -375,7 +375,7 @@ private:
 
 int main() {
     RBTree<int> intBT;
-    vector<int> a = {6, 3, 8, 2, 7, 79, 8};
+    vector<int> a = {6, 3, 8, 2, 5, 7, 79, 8};
 /*
     intBT.push(a[0]);
     intBT.push(a[1], 1);
@@ -389,7 +389,7 @@ int main() {
     for (int i = 0; i < a.size(); i++){
         intBT.insert(a[i]);}
     intBT.pprint();
-    intBT.remove(7);
+    intBT.remove(3);
     intBT.pprint();
     return 0;
 }
