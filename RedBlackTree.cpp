@@ -136,7 +136,7 @@ private:
     // Важный момент: поворачиваем "тяня" за вершину, т.е. передаем ту вершину, которая уйдет "вверх";
     // Просто в разных источниках поворот реализуется по разному, так что это упоминуть нужно.
     // В остальном это просто повороты, так что здесь без комментариев.
-
+    // <Если вы будете дорабатывать код и у вас возникнут проблемы, смотрите в первую очередь на повороты>
     void right_rotate(Node<type> *pNode) {
         if (pNode->parent != nil) {
             if (pNode->right != nil) {
@@ -249,12 +249,12 @@ private:
                     if (pNode == pNode->parent->right) { // Если узел является правым ребенком своего родителя
                         // Поднять узел на уровень выше к его родителю и выполнить левый поворот
                         pNode = pNode->parent;
-                        left_rotate(pNode);
+                        left_rotate(pNode->right);
                     }
                     // Перекрасить родителя и дедушку узла, а затем выполнить правый поворот на дедушке
                     pNode->parent->color = false;
                     pNode->parent->parent->color = true;
-                    right_rotate(pNode->parent->parent);
+                    right_rotate(pNode->parent);
                 }
             } else { // Если родитель узла - правый ребенок его деда (случаи симметричны)
                 Node<type> *uncle = pNode->parent->parent->left;
@@ -266,11 +266,11 @@ private:
                 } else {
                     if (pNode == pNode->parent->left) {
                         pNode = pNode->parent;
-                        right_rotate(pNode);
+                        right_rotate(pNode->left);
                     }
                     pNode->parent->color = false;
                     pNode->parent->parent->color = true;
-                    left_rotate(pNode->parent->parent);
+                    left_rotate(pNode->parent);
                 }
             }
         }
@@ -365,13 +365,11 @@ int main() {
     }
     intBT.pprint();
     cout << "++++++++++++++++++++++\n";
-    intBT.remove(8);
+    intBT.remove(7);
     intBT.pprint();
     cout << intBT.vectorize();
     return 0;
 }
-
-
 //
-// Created by zer0rbt with contribution of LisaNota on 06.03.2023.
+// Created by zer-oRBT on 25.03.2023.
 //
